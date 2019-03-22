@@ -1,3 +1,5 @@
-# Esqueleto para el proyecto 1 del curso Estructuras de Datos
+# Proyecto 2 del curso Estructuras de Datos
+Presentado por:
+Santiago Cala y Sofía Gutiérrez
 
 
