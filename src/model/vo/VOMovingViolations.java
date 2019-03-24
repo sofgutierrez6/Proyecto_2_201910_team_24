@@ -1,65 +1,157 @@
 package model.vo;
 
+import java.util.Date;
+
+
+import java.util.Iterator;
+
+
 /**
  * Representation of a Trip object
  */
-public class VOMovingViolations {
+public class VOMovingViolations implements Iterable<VOMovingViolations>, Comparable<VOMovingViolations> 
+{
 
+	private int objectId , streetSegId , addressId  ;
+	private String location, violationDes, violationCode;
+	private String ticketIssue;
+	private double fineamt, totalPaid/*, penalty1, penalty2*/;
+	private boolean accidentIndicator;
 	
+	public VOMovingViolations( int pObjectId, String pLocation, int pAddressId, int pStreetId, double pFine, double pTotal, /*double pPenalty1,String pPenalty2,*/boolean pAccidentIndicator, String pTicketIssue, String pViolationCode, String pViolationDes)
+	{
+		objectId = pObjectId;
+		location = pLocation;
+		
+		addressId = pAddressId;
+		streetSegId = pStreetId;
+		
+		fineamt = pFine;
+		totalPaid = pTotal;
+		//penalty1 = pPenalty1;
+		//penalty2 = pPenalty2;
+		
+		accidentIndicator = pAccidentIndicator;
+		ticketIssue = pTicketIssue;
+		
+		violationCode = pViolationCode;		
+		violationDes = pViolationDes;
+		
+	}
 	/**
-	 * @return id - Identificador único de la infracción
+	{
+	DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+	DateTime dt = dtf.parseDateTime(pTicketIssue);
+	ticketIssue = dt.toDate();
+	}
+	catch (Exception e)
+	{
+	if (pTicketIssue.indexOf("T")!=-1 && pTicketIssue.indexOf("T") != 0)
+	{
+	String dateWorkaround = pTicketIssue.substring(0, pTicketIssue.indexOf("T"));
+	DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
+	DateTime dt = dtf.parseDateTime(dateWorkaround);
+	ticketIssue = dt.toDate();
+	}
+	}
+	 */
+	/**
+	 * @return id - Identificador Ãºnico de la infracciÃ³n
 	 */
 	public int objectId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}	
-	
-	
+		return objectId;
+	} 
 	/**
-	 * @return location - Dirección en formato de texto.
+	 * @return location - DirecciÃ³n en formato de texto.
 	 */
 	public String getLocation() {
-		// TODO Auto-generated method stub
-		return "";
+		return location;
 	}
 
 	/**
-	 * @return date - Fecha cuando se puso la infracción .
+	 * @return date - Fecha cuando se puso la infracciÃ³n .
 	 */
 	public String getTicketIssueDate() {
-		// TODO Auto-generated method stub
-		return "";
+		return ticketIssue;
 	}
-	
 	/**
-	 * @return totalPaid - Cuanto dinero efectivamente pagó el que recibió la infracción en USD.
+	 * @return totalPaid - Cuanto dinero efectivamente pagÃ³ el que recibiÃ³ la infracciÃ³n en USD.
 	 */
-	public int getTotalPaid() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public double getTotalPaid() {
 	
+		return totalPaid;
+	}
+	public double getFine()
+	{
+		return fineamt;
+	}
 	/**
 	 * @return accidentIndicator - Si hubo un accidente o no.
 	 */
-	public String  getAccidentIndicator() {
-		// TODO Auto-generated method stub
-		return "";
+	public boolean  getAccidentIndicator() {
+		// 
+		return accidentIndicator;
 	}
-		
 	/**
-	 * @return description - Descripción textual de la infracción.
+	 * @return description - Descripci�n textual de la infracci�n.
 	 */
-	public String  getViolationDescription() {
-		// TODO Auto-generated method stub
-		return "";
+	public String  getViolationDescription() 
+	{
+		// 
+		return violationDes;
 	}
 	
-	public String getStreetSegId() {
-		return "";
+	public String getViolationCode()
+	{
+		return violationCode;
 	}
 	
-	public String getAddressId() {
-		return "";
+	public int getStreetSegId() 
+	{
+		return streetSegId;
+	}
+	
+	public int getAddressId() 
+	{
+		return addressId;
+	}
+
+	/*
+	public double getPenalty1()
+	{
+		return penalty1;
+	}
+	
+	public String getPenalty2() {
+		return penalty2;
+	}*/
+	
+	@Override
+	public int compareTo(VOMovingViolations o) {
+		// 
+		if (o.objectId() == this.objectId() )
+		{
+			return 0;
+		}
+		else if (o.objectId() < this.objectId()) 
+		{
+			return 1;
+		}
+		else
+			return -1;
+	}
+
+
+	@Override
+	public Iterator<VOMovingViolations> iterator() {
+		
+		return (Iterator) this;
+	}
+	public String toString()
+	{
+		/**
+		 * OBJECTID,	LOCATION,	TICKETISSUEDATE,	VIOLATIONCODE	y	FINEAMT
+		 */
+		return "{id: "+objectId+", location: "+location+" , ticketIssue:"+ticketIssue+" ,ViolationCode:"+violationCode+" , finemat:"+fineamt+ "}"  ;
 	}
 }
