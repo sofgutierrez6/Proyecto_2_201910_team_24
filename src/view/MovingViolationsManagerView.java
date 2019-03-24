@@ -6,8 +6,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import controller.Controller;
+import model.data_structures.BST;
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
+import model.data_structures.MaxColaPrioridad;
 import model.data_structures.TablaHash;
 import model.vo.VODaylyStatistic;
 import model.vo.VOMovingViolations;
@@ -56,12 +58,15 @@ public class MovingViolationsManagerView
 		}*/
 	}
 	
-	public void printMovingViolationsReq4(IStack<VOMovingViolations> resultados4) {
+	public void printBST(BST<String, VOMovingViolations> resultados) 
+	{
+		//TODO
+				/*
 		System.out.println("OBJECTID\t TICKETISSUEDAT\t STREETSEGID\t ADDRESS_ID");
 
 		for(VOMovingViolations v: resultados4) {
 			System.out.println( v.objectId() + "\t" + v.getTicketIssueDate() + "\t" + v.getStreetSegId() + "\t" + v.getAddressId());
-		}
+		}*/
 	}
 	
 	public void printViolationCodesReq5(IQueue<VOViolationCode> violationCodes) {
@@ -72,11 +77,11 @@ public class MovingViolationsManagerView
 		}
 	}
 	
-	public void printMovingViolationReq6(IStack<VOMovingViolations> resultados6) {
-		System.out.println("OBJECTID\t TICKETISSUEDAT\t TOTALPAID");
+	public void printPrioQueue(MaxColaPrioridad<VOMovingViolations> resultados6) {
+		/*System.out.println("OBJECTID\t TICKETISSUEDAT\t TOTALPAID");
 		for(VOMovingViolations v: resultados6) {
 			System.out.println( v.objectId() + "\t" + v.getTicketIssueDate() + "\t" + v.getTotalPaid());
-		}
+		}*/
 	}
 	
 	public void printMovingViolationsReq7(IQueue<VOMovingViolations> resultados7) {
