@@ -8,6 +8,7 @@ import java.util.Scanner;
 import controller.Controller;
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
+import model.data_structures.TablaHash;
 import model.vo.VODaylyStatistic;
 import model.vo.VOMovingViolations;
 import model.vo.VOViolationCode;
@@ -45,10 +46,14 @@ public class MovingViolationsManagerView
 		System.out.println(mensaje);
 	}
 	
-	public void printMovingViolationsReq2(IQueue<VOMovingViolations> resultados2) {
-		for(VOMovingViolations v: resultados2) {
+	public void printMovingViolationsReq2(TablaHash<Double,VOMovingViolations> resultados2) 
+	{
+		//TODO
+		/*
+		for(VOMovingViolations v: resultados2)
+		{
 			System.out.println("ObjectID: " + v.objectId() + ", issued: " + v.getTicketIssueDate());
-		}
+		}*/
 	}
 	
 	public void printMovingViolationsReq4(IStack<VOMovingViolations> resultados4) {

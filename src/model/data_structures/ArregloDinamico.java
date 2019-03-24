@@ -37,7 +37,6 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 
 	public T darElemento(int i)
 	{
-		// TODO implementar
 		return elementos[i];
 	}
 
@@ -74,7 +73,6 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 	@Override
 	public T buscar(T dato) 
 	{
-		// TODO 
 		T t= dato;
 		T resp=null;
 		for(int i =0; i<elementos.length;i++)
@@ -89,7 +87,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 
 	@Override
 	public T eliminar(T dato) {
-		// TODO 
+		 
 		T[] copia=elementos;
 		if(buscar(dato)!=null)
 		{

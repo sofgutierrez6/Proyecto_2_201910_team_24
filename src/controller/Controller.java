@@ -12,9 +12,15 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import model.data_structures.ArregloDinamico;
+import model.data_structures.BST;
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
+import model.data_structures.MaxColaPrioridad;
+import model.data_structures.TablaHash;
+import model.vo.LocationVO;
 import model.vo.VODaylyStatistic;
+import model.vo.VOGeographicLocation;
 import model.vo.VOMovingViolations;
 import model.vo.VOViolationCode;
 import view.MovingViolationsManagerView;
@@ -22,7 +28,7 @@ import view.MovingViolationsManagerView;
 public class Controller {
 
 	private MovingViolationsManagerView view;
-	
+
 	public final static String mesEnero = "./data/Moving_Violations_Issued_in_January_2018.csv";
 
 	public final static String mesFebrero = "./data/Moving_Violations_Issued_in_February_2018.csv";
@@ -46,16 +52,16 @@ public class Controller {
 	public final static String mesNomviembre = "./data/Moving_Violations_Issued_in_November_2018.csv";
 
 	public final static String mesdiciembre= "./data/Moving_Violations_Issued_in_December_2018.csv";
-	
+
 	public Double Xmin, Ymin, Xmax, Ymax;
 
 
 	public Controller() {
 		view = new MovingViolationsManagerView();
-		
+
 		Xmin=10.0;
 		Ymin=10.0;
-		
+
 		Xmax=0.0;
 		Ymax=0.0;
 	}
@@ -77,7 +83,7 @@ public class Controller {
 				view.printMessage("Ingrese el semestre (1 o 2)");
 				int numeroCuatrimestre = sc.nextInt();
 				int numCargados=controller.loadMovingViolations(numeroCuatrimestre);
-				
+
 				System.out.println("");
 				System.out.println("El total de infracciones del semestre fue: "+numCargados);
 				System.out.println("La zona geográfica Minimax es: ("+Xmin+","+Ymin+") y ("+Xmax+","+Ymax+")");
@@ -86,22 +92,16 @@ public class Controller {
 			case 1:
 				view.printMessage("Ingrese el número N de franjas horarias deseadas");
 				int N1 = sc.nextInt();
-				controller.NFranjas();
+				controller.getNFranjas(N1);
 				break;
 
 			case 2:
-				//Para las fechas
-				/*view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2017T15:30:20)");
-				LocalDateTime fechaInicialReq2A = convertirFecha_Hora_LDT(sc.next());
-
-				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2017T15:30:20)");
-				LocalDateTime fechaFinalReq2A = convertirFecha_Hora_LDT(sc.next());
-
-				IQueue<VOMovingViolations> resultados2 = controller.getMovingViolationsInRange(fechaInicialReq2A, fechaFinalReq2A);
-
-				view.printMovingViolationsReq2(resultados2);*/
-				
-				
+				view.printMessage("Ingrese la coordenada x");
+				double X= sc.nextDouble();
+				view.printMessage("Ingrese la coordenada y");
+				double Y=sc.nextDouble();
+				TablaHash<Double,VOMovingViolations> r2 =controller.getMovingViolationsInXY(X,Y);
+				view.printMovingViolationsReq2(r2);
 				break;
 
 			case 3:
@@ -109,7 +109,7 @@ public class Controller {
 				view.printMessage("Ingrese el VIOLATIONCODE (Ej : T210)");
 				String violationCode3 = sc.next();
 
-				double [] promedios3 = controller.avgFineAmountByViolationCode(violationCode3);
+				double [] promedios3 = controller.getNTipos(violationCode3);
 
 				view.printMessage("FINEAMT promedio sin accidente: " + promedios3[0] + ", con accidente:" + promedios3[1]);
 				break;
@@ -270,18 +270,18 @@ public class Controller {
 					int pOBJECTID=OBJECTID.equals("")?0:Integer.parseInt(OBJECTID);
 					//String ROW_ = csvRecord.get(1);
 					String LOCATION = csvRecord.get(2);
-					
+
 					String STREETSEGID = csvRecord.get(4);  
 					String ADDRESS_ID = csvRecord.get(3).equals("")?STREETSEGID:csvRecord.get(3); 
-					
+
 					int pADDRESS_ID =ADDRESS_ID.equals("")?0:Integer.parseInt(ADDRESS_ID);
 					int pSTREETSEGID=STREETSEGID.equals("")?0:Integer.parseInt(STREETSEGID);
-					
+
 					String XCOORD = csvRecord.get(5);
 					String YCOORD = csvRecord.get(6);
 					Double x = XCOORD.equals("")?0:Double.parseDouble(XCOORD);
 					Double y = YCOORD.equals("")?0:Double.parseDouble(YCOORD);
-					
+
 					// TODO
 					//Rectangulo Min y Max
 					if(x>Xmax){Xmax=x;}
@@ -289,10 +289,10 @@ public class Controller {
 					if(x<Xmin){Xmin=x;}
 					if(y<Ymin){Ymin=y;}
 					//String TICKETTYPE = csvRecord.get(7);
-					
+
 					String FINEAMT = csvRecord.get(8);
 					String TOTALPAID = csvRecord.get(9);
-					
+
 					Double pFINEAMT=FINEAMT.equals("")?0:Double.parseDouble(FINEAMT);
 					Double pTOTALPAID=TOTALPAID.equals("")?0:Double.parseDouble(TOTALPAID);
 					/*String PENALTY1 = csvRecord.get(10);
@@ -303,9 +303,9 @@ public class Controller {
 					String VIOLATIONDESC = !otroAtributo ? csvRecord.get(15).toString() :  csvRecord.get(16);
 					String VIOLATIONCODE = !otroAtributo ? csvRecord.get(14).toString() :  csvRecord.get(15);
 					//System.out.println(OBJECTID + "," + LOCATION +  "," + ADDRESS_ID + "," + STREETSEGID);
-VOMovingViolations newMoving = new VOMovingViolations(pOBJECTID,LOCATION,pADDRESS_ID,pSTREETSEGID,pFINEAMT,pTOTALPAID,pACCIDENTINDICATOR,TICKETISSUEDATE,VIOLATIONCODE,VIOLATIONDESC, x, y);
+					VOMovingViolations newMoving = new VOMovingViolations(pOBJECTID,LOCATION,pADDRESS_ID,pSTREETSEGID,pFINEAMT,pTOTALPAID,pACCIDENTINDICATOR,TICKETISSUEDATE,VIOLATIONCODE,VIOLATIONDESC, x, y);
 					numCargados++;
-//moving.add(listaa);
+					//moving.add(listaa);
 				}
 			}
 		}
@@ -318,67 +318,84 @@ VOMovingViolations newMoving = new VOMovingViolations(pOBJECTID,LOCATION,pADDRES
 		System.out.println("El total de infracciones del mes fue: "+numCargados);
 		return numCargados;
 	}
+	/**
+	 *  Parte A 
+	 */
+	public MaxColaPrioridad<VOMovingViolations> getNFranjas(int N) {
+		// TODO R1
+		return null;
+	}
 
+	public TablaHash<Double,VOMovingViolations> getMovingViolationsInXY(double X,double Y)
+	{
+		// TODO R2
+		return null;
+	}
+
+	public BST<String, VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial,
+			LocalDateTime fechaFinal) 
+	{
+		// TODO R3 		
+		return null;
+	}
+
+	/**
+	 * Parte B
+	 */
+	public MaxColaPrioridad<VOMovingViolations> getNTipos(int N) 
+	{
+		// TODO R4
+		return null;
+	}
+
+	public BST<VOGeographicLocation,VOMovingViolations> getBSTViolationsInXY(double x, double y) 
+	{
+		// TODO R5
+		return null;
+	}
+
+	public BST<Double, VOMovingViolations> getHoursFineInRange(LocalDate fechaInicial, LocalDate fechaFinal) 
+	{
+		// TODO R6
+		return null;
+	}
+	
+	/**
+	 * Parte C
+	 */
+
+	public ArregloDinamico<LocationVO> getMovingViolationsByTotalPaid(String AddressID) 
+	{
+		// TODO R7
+		return null;
+	}
+
+	public BST<String,VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) 
+	{
+		// TODO R8
+		return null;
+	}
+
+	public BST<VOGeographicLocation, VOMovingViolations> getNGeoLocations(int N) {
+		// TODO R9
+		return null;
+	}
+
+	public int countMovingViolationsByCode(String ViolationCode) 
+	{
+		// TODO R10
+		return 0;
+	}
+
+
+	/*
 	public IQueue <VODaylyStatistic> getDailyStatistics () {
 		return null;
 	}
 
 	public IStack <VOMovingViolations> nLastAccidents(int n) {
 		return null;
-	}
-
-	public void NFranjas() {
-		// TODO
-	}
-
-	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial,
-			LocalDateTime fechaFinal) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public double[] avgFineAmountByViolationCode(String violationCode3) {
-		return new double [] {0.0 , 0.0};
-	}
-
-	public IStack<VOMovingViolations> getMovingViolationsAtAddressInRange(String addressId,
-			LocalDate fechaInicial, LocalDate fechaFinal) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public IQueue<VOViolationCode> violationCodesByFineAmt(double limiteInf5, double limiteSup5) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public IStack<VOMovingViolations> getMovingViolationsByTotalPaid(double limiteInf6, double limiteSup6,
-			boolean ascendente6) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public IQueue<VOMovingViolations> getMovingViolationsByHour(int horaInicial7, int horaFinal7) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public double[] avgAndStdDevFineAmtOfMovingViolation(String violationCode8) {
-		// TODO Auto-generated method stub
-		return new double [] {0.0 , 0.0};
-	}
-
-	public int countMovingViolationsInHourRange(int horaInicial9, int horaFinal9) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public double totalDebt(LocalDate fechaInicial11, LocalDate fechaFinal11) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
+	}*/
 	/**
 	 * Convertir fecha a un objeto LocalDate
 	 * @param fecha fecha en formato dd/mm/aaaa con dd para dia, mm para mes y aaaa para agno
