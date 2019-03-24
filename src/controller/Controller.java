@@ -81,13 +81,14 @@ public class Controller {
 				break;
 
 			case 1:
-				boolean isUnique = controller.verifyObjectIDIsUnique();
-				view.printMessage("El objectId es Ãºnico: " + isUnique);
+				view.printMessage("Ingrese el número N de franjas horarias deseadas");
+				int N1 = sc.nextInt();
+				controller.NFranjas();
 				break;
 
 			case 2:
-
-				view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2017T15:30:20)");
+				//Para las fechas
+				/*view.printMessage("Ingrese la fecha con hora inicial (Ej : 28/03/2017T15:30:20)");
 				LocalDateTime fechaInicialReq2A = convertirFecha_Hora_LDT(sc.next());
 
 				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2017T15:30:20)");
@@ -95,8 +96,9 @@ public class Controller {
 
 				IQueue<VOMovingViolations> resultados2 = controller.getMovingViolationsInRange(fechaInicialReq2A, fechaFinalReq2A);
 
-				view.printMovingViolationsReq2(resultados2);
-
+				view.printMovingViolationsReq2(resultados2);*/
+				
+				
 				break;
 
 			case 3:
@@ -192,7 +194,7 @@ public class Controller {
 				view.printMovingViolationsByHourReq10();
 				break;
 
-			case 11:
+			case 13:
 				view.printMessage("Ingrese la fecha inicial (Ej : 28/03/2017)");
 				LocalDate fechaInicial11 = convertirFecha(sc.next());
 
@@ -205,10 +207,9 @@ public class Controller {
 
 			case 12:	
 				view.printTotalDebtbyMonthReq12();
-
 				break;
 
-			case 13:	
+			case 11:	
 				fin=true;
 				sc.close();
 				break;
@@ -297,7 +298,7 @@ public class Controller {
 					String VIOLATIONDESC = !otroAtributo ? csvRecord.get(15).toString() :  csvRecord.get(16);
 					String VIOLATIONCODE = !otroAtributo ? csvRecord.get(14).toString() :  csvRecord.get(15);
 					//System.out.println(OBJECTID + "," + LOCATION +  "," + ADDRESS_ID + "," + STREETSEGID);
-VOMovingViolations newMoving = new VOMovingViolations(pOBJECTID,LOCATION,pADDRESS_ID,pSTREETSEGID,pFINEAMT,pTOTALPAID,pACCIDENTINDICATOR,TICKETISSUEDATE,VIOLATIONCODE,VIOLATIONDESC);
+VOMovingViolations newMoving = new VOMovingViolations(pOBJECTID,LOCATION,pADDRESS_ID,pSTREETSEGID,pFINEAMT,pTOTALPAID,pACCIDENTINDICATOR,TICKETISSUEDATE,VIOLATIONCODE,VIOLATIONDESC, x, y);
 					numCargados++;
 //moving.add(listaa);
 				}
@@ -321,8 +322,8 @@ VOMovingViolations newMoving = new VOMovingViolations(pOBJECTID,LOCATION,pADDRES
 		return null;
 	}
 
-	public boolean verifyObjectIDIsUnique() {
-		return false;
+	public void NFranjas() {
+		// TODO
 	}
 
 	public IQueue<VOMovingViolations> getMovingViolationsInRange(LocalDateTime fechaInicial,

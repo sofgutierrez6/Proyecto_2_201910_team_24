@@ -15,33 +15,29 @@ import model.vo.VOViolationCode;
 public class MovingViolationsManagerView 
 {
 	/**
-	 * Constante con el número maximo de datos maximo que se deben imprimir en consola
+	 * Constante con el nÃºmero maximo de datos maximo que se deben imprimir en consola
 	 */
 	public static final int N = 20;
 	
 	public void printMenu() {
 		System.out.println("---------ISIS 1206 - Estructuras de datos----------");
-		System.out.println("---------------------Taller 3----------------------");
-		System.out.println("0. Cargar datos del cuatrimestre");
-		System.out.println("1. Verificar que OBJECTID es en realidad un identificador único");
-		System.out.println("2. Consultar infracciones por fecha/hora inicial y fecha/hora final");
-		System.out.println("3. Dar FINEAMT promedio con y sin accidente por VIOLATIONCODE");
-		System.out.println("4. Consultar infracciones por direccion entre fecha inicial y fecha final");
-
+		System.out.println("---------------------Proyecto 2----------------------");
+		System.out.println("0. Cargar datos del semestre");
+		System.out.println("1. Obtener el ranking de las N franjas horarias");
+		System.out.println("2. Ordenamiento y búsqueda de las infracciones por Localización Geográfica (Xcoord, Ycoord)");
+		System.out.println("3. Buscar las infracciones por rango de fechas");
 		
-		System.out.println("5. Consultar los tipos de infracciones (VIOLATIONCODE) con su valor (FINEAMT) promedio en un rango dado");
-		System.out.println("6. Consultar infracciones donde la cantidad pagada (TOTALPAID) esta en un rango dado. Se ordena por fecha de infracción");
-		System.out.println("7. Consultar infracciones por hora inicial y hora final, ordenada ascendentemente por VIOLATIONDESC");
-		System.out.println("8. Dado un tipo de infracción (VIOLATIONCODE) informar el (FINEAMT) promedio y su desviación estándar.");
-
-		System.out.println("9. El número de infracciones que ocurrieron en un rango de horas del día. Se define el rango de horas por valores enteros en el rango [0, 24]");
-		System.out.println("10. Grafica ASCII con el porcentaje de infracciones que tuvieron accidentes por hora del día");
-		System.out.println("11. La deuda (TOTALPAID – FINEAMT - PENALTY1 – PENALTY2) total por infracciones que se dieron en un rango de fechas.");
-		System.out.println("12. Grafica ASCII con la deuda acumulada total por infracciones");
-
+		System.out.println("4. Obtener el ranking de las N tipos de infracción (ViolationCode) que tengan más infracciones");		
+		System.out.println("5. Realizar el ordenamiento de las infracciones por Localización Geográfica (Xcoord, Ycoord)");
+		System.out.println("6. Buscar las franjas de fecha-hora donde se tiene un valor acumulado de infracciones en un rango dado [US$ valor inicial, US$ valor final].");
 		
-		System.out.println("13. Salir");
-		System.out.println("Digite el n�mero de opci�n para ejecutar la tarea, luego presione enter: (Ej., 1):");
+		System.out.println("7. Obtener la información de una localización dada");
+		System.out.println("8. Obtener las infracciones en un rango de horas [HH:MM:SS inicial, HH:MM:SS final].");
+		System.out.println("9. Obtener el ranking de las N localizaciones geográficas (Xcoord, Ycoord) con la mayor cantidad de infracciones");
+		System.out.println("10. Gráfica ASCII con la información de las infracciones por código (ViolationCode)");
+		
+		System.out.println("11. Salir");
+		System.out.println("Digite el número de opción para ejecutar la tarea, luego presione enter: (Ej., 1):");
 		
 	}
 	

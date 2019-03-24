@@ -2,11 +2,12 @@ package model.vo;
 
 public class LocationVO implements Comparable<LocationVO>
 {
+	
 	int addressId;
 	String location;
 	boolean repetido=false;
 	/**
-	 * corresponde al nÃºmero de veces que aparece el addressId en los registros cargados
+	 * Corresponde al número de veces que aparece el addressId en los registros cargados
 	 */
 	int numberOfRegisters;
 

@@ -15,10 +15,10 @@ public class VOMovingViolations implements Iterable<VOMovingViolations>, Compara
 	private int objectId , streetSegId , addressId  ;
 	private String location, violationDes, violationCode;
 	private String ticketIssue;
-	private double fineamt, totalPaid/*, penalty1, penalty2*/;
+	private double fineamt, totalPaid/*, penalty1, penalty2*/,x,y;
 	private boolean accidentIndicator;
 	
-	public VOMovingViolations( int pObjectId, String pLocation, int pAddressId, int pStreetId, double pFine, double pTotal, /*double pPenalty1,String pPenalty2,*/boolean pAccidentIndicator, String pTicketIssue, String pViolationCode, String pViolationDes)
+	public VOMovingViolations( int pObjectId, String pLocation, int pAddressId, int pStreetId, double pFine, double pTotal, /*double pPenalty1,String pPenalty2,*/boolean pAccidentIndicator, String pTicketIssue, String pViolationCode, String pViolationDes, double x, double y)
 	{
 		objectId = pObjectId;
 		location = pLocation;
@@ -36,6 +36,9 @@ public class VOMovingViolations implements Iterable<VOMovingViolations>, Compara
 		
 		violationCode = pViolationCode;		
 		violationDes = pViolationDes;
+		
+		this.x=x;
+		this.y=y;
 		
 	}
 	/**
@@ -114,6 +117,16 @@ public class VOMovingViolations implements Iterable<VOMovingViolations>, Compara
 	public int getAddressId() 
 	{
 		return addressId;
+	}
+	
+	public double getX()
+	{
+		return x;
+	}
+	
+	public double getY()
+	{
+		return y;
 	}
 
 	/*
