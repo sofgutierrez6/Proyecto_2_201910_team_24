@@ -1,4 +1,4 @@
-package model.data_structures;
+package model.data_structuresTest;
 
 import static org.junit.Assert.fail;
 
