@@ -53,8 +53,8 @@ public class Controller {
 	public Controller() {
 		view = new MovingViolationsManagerView();
 		
-		Xmin=200.0;
-		Ymin=200.0;
+		Xmin=10.0;
+		Ymin=10.0;
 		
 		Xmax=0.0;
 		Ymax=0.0;
@@ -77,7 +77,10 @@ public class Controller {
 				view.printMessage("Ingrese el semestre (1 o 2)");
 				int numeroCuatrimestre = sc.nextInt();
 				int numCargados=controller.loadMovingViolations(numeroCuatrimestre);
+				
+				System.out.println("");
 				System.out.println("El total de infracciones del semestre fue: "+numCargados);
+				System.out.println("La zona geográfica Minimax es: ("+Xmin+","+Ymin+") y ("+Xmax+","+Ymax+")");
 				break;
 
 			case 1:
@@ -225,27 +228,28 @@ public class Controller {
 		switch(numeroSemestre)
 		{
 		case 1:
-			numCargados+= loadMovingViolations(mesEnero, false);
-			numCargados+= loadMovingViolations(mesFebrero, false);
-			numCargados+= loadMovingViolations(mesMarzo, false);
-			numCargados+= loadMovingViolations(mesAbril, false);
-			numCargados+= loadMovingViolations(mesMayo, false);
-			numCargados+= loadMovingViolations(mesJunio, false);
+			numCargados+= loadMovingViolationsXMes(mesEnero, false);
+			numCargados+= loadMovingViolationsXMes(mesFebrero, false);
+			numCargados+= loadMovingViolationsXMes(mesMarzo, false);
+			numCargados+= loadMovingViolationsXMes(mesAbril, false);
+			numCargados+= loadMovingViolationsXMes(mesMayo, false);
+			numCargados+= loadMovingViolationsXMes(mesJunio, false);
 			break;
 
 		case 2:
-			numCargados+= loadMovingViolations(mesJulio, false);
-			numCargados+= loadMovingViolations(mesAgosto, false);
-			numCargados+= loadMovingViolations(mesSeptiembre, false);
-			numCargados+= loadMovingViolations(mesOctubre, true);
-			numCargados+= loadMovingViolations(mesNomviembre, true);
-			numCargados+= loadMovingViolations(mesdiciembre, true);					
+			numCargados+= loadMovingViolationsXMes(mesJulio, false);
+			numCargados+= loadMovingViolationsXMes(mesAgosto, false);
+			numCargados+= loadMovingViolationsXMes(mesSeptiembre, false);
+			numCargados+= loadMovingViolationsXMes(mesOctubre, true);
+			numCargados+= loadMovingViolationsXMes(mesNomviembre, true);
+			numCargados+= loadMovingViolationsXMes(mesdiciembre, true);					
 			break;
 		}
 		return numCargados;
 	}
-	public int loadMovingViolations(String movingViolationsFile, boolean otroAtributo) {
-
+	public int loadMovingViolationsXMes(String movingViolationsFile, boolean otroAtributo) {
+		System.out.println("");
+		System.out.println("Se está cargando: "+movingViolationsFile);
 		int numCargados=0;
 		int linea = 0;
 		try {
@@ -263,21 +267,22 @@ public class Controller {
 					String OBJECTID =  csvRecord.get(0);
 					if(OBJECTID.contains(","))
 						continue;
-					int pOBJECTID =Integer.parseInt(OBJECTID);
+					int pOBJECTID=OBJECTID.equals("")?0:Integer.parseInt(OBJECTID);
 					//String ROW_ = csvRecord.get(1);
 					String LOCATION = csvRecord.get(2);
 					
 					String STREETSEGID = csvRecord.get(4);  
 					String ADDRESS_ID = csvRecord.get(3).equals("")?STREETSEGID:csvRecord.get(3); 
 					
-					int pADDRESS_ID =Integer.parseInt(ADDRESS_ID);
-					int pSTREETSEGID=Integer.parseInt(STREETSEGID);
+					int pADDRESS_ID =ADDRESS_ID.equals("")?0:Integer.parseInt(ADDRESS_ID);
+					int pSTREETSEGID=STREETSEGID.equals("")?0:Integer.parseInt(STREETSEGID);
 					
 					String XCOORD = csvRecord.get(5);
 					String YCOORD = csvRecord.get(6);
-					Double x = Double.parseDouble(XCOORD);
-					Double y = Double.parseDouble(YCOORD);
+					Double x = XCOORD.equals("")?0:Double.parseDouble(XCOORD);
+					Double y = YCOORD.equals("")?0:Double.parseDouble(YCOORD);
 					
+					// TODO
 					//Rectangulo Min y Max
 					if(x>Xmax){Xmax=x;}
 					if(y>Ymax){Ymax=y;}
@@ -288,8 +293,8 @@ public class Controller {
 					String FINEAMT = csvRecord.get(8);
 					String TOTALPAID = csvRecord.get(9);
 					
-					Double pFINEAMT=Double.parseDouble(FINEAMT);
-					Double pTOTALPAID=Double.parseDouble(TOTALPAID);
+					Double pFINEAMT=FINEAMT.equals("")?0:Double.parseDouble(FINEAMT);
+					Double pTOTALPAID=TOTALPAID.equals("")?0:Double.parseDouble(TOTALPAID);
 					/*String PENALTY1 = csvRecord.get(10);
 					String PENALTY2 = csvRecord.get(11);*/					
 					String ACCIDENTINDICATOR = csvRecord.get(12);
