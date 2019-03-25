@@ -53,14 +53,14 @@ public class Controller {
 
 	public final static String mesdiciembre= "./data/Moving_Violations_Issued_in_December_2018.csv";
 
-	public Double Xmin, Ymin, Xmax, Ymax;
+	public static Double Xmin, Ymin, Xmax, Ymax;
 
 
 	public Controller() {
 		view = new MovingViolationsManagerView();
 
-		Xmin=10.0;
-		Ymin=10.0;
+		Xmin=393185.8;
+		Ymin=138316.9;
 
 		Xmax=0.0;
 		Ymax=0.0;
@@ -110,7 +110,7 @@ public class Controller {
 
 				view.printMessage("Ingrese la fecha con hora final (Ej : 28/03/2017)");
 				LocalDate fechaFinalReq3A = convertirFecha(sc.next());
-				
+
 				BST<String, VOMovingViolations> r3=	controller.getMovingViolationsInRange(fechaInicialReq3A,fechaFinalReq3A);
 				view.printBST(r3);
 				break;
@@ -160,7 +160,7 @@ public class Controller {
 				//TODO
 				view.printMovingViolationsByHourReq10();
 				break;
-			/*
+				/*
 			case 13:
 				view.printMessage("Ingrese la fecha inicial (Ej : 28/03/2017)");
 				LocalDate fechaInicial11 = convertirFecha(sc.next());
@@ -189,28 +189,29 @@ public class Controller {
 	public int loadMovingViolations(int numeroSemestre) 
 	{
 		int numCargados=0;
-		switch(numeroSemestre)
+		if(numeroSemestre==1)
 		{
-		case 1:
 			numCargados+= loadMovingViolationsXMes(mesEnero, false);
 			numCargados+= loadMovingViolationsXMes(mesFebrero, false);
 			numCargados+= loadMovingViolationsXMes(mesMarzo, false);
 			numCargados+= loadMovingViolationsXMes(mesAbril, false);
 			numCargados+= loadMovingViolationsXMes(mesMayo, false);
 			numCargados+= loadMovingViolationsXMes(mesJunio, false);
-			break;
+		}
 
-		case 2:
+		else if(numeroSemestre==2)
+		{
 			numCargados+= loadMovingViolationsXMes(mesJulio, false);
 			numCargados+= loadMovingViolationsXMes(mesAgosto, false);
 			numCargados+= loadMovingViolationsXMes(mesSeptiembre, false);
 			numCargados+= loadMovingViolationsXMes(mesOctubre, true);
 			numCargados+= loadMovingViolationsXMes(mesNomviembre, true);
 			numCargados+= loadMovingViolationsXMes(mesdiciembre, true);					
-			break;
+
 		}
 		return numCargados;
 	}
+
 	public int loadMovingViolationsXMes(String movingViolationsFile, boolean otroAtributo) {
 		System.out.println("");
 		System.out.println("Se está cargando: "+movingViolationsFile);
@@ -243,15 +244,25 @@ public class Controller {
 
 					String XCOORD = csvRecord.get(5);
 					String YCOORD = csvRecord.get(6);
-					Double x = XCOORD.equals("")?0:Double.parseDouble(XCOORD);
-					Double y = YCOORD.equals("")?0:Double.parseDouble(YCOORD);
+					Double x = XCOORD.equals("")?0.0:Double.parseDouble(XCOORD);
+					Double y = YCOORD.equals("")?0.0:Double.parseDouble(YCOORD);
+					/*int n=0;
+					if(n<20)
+					{
+						System.out.println(x+","+y);
+						n++;
+					}
 
+					int i=0;
+					int j=0;
+					int k=0;
+					int l=0;*/
 					// TODO
 					//Rectangulo Min y Max
-					if(x>Xmax){Xmax=x;}
-					if(y>Ymax){Ymax=y;}
-					if(x<Xmin){Xmin=x;}
-					if(y<Ymin){Ymin=y;}
+					if(x>Xmax){Xmax=x;/*if(i<20){System.out.println("xmax");i++;}*/}
+					if(y>Ymax){Ymax=y;/*if(j<20){System.out.println("ymax");j++;}*/}
+					if(x<Xmin){Xmin=x;/*if(k<20){System.out.println("xmin");k++;}*/}
+					if(y<Ymin){Ymin=y;/*if(l<20){System.out.println("ymin");l++;}*/}
 					//String TICKETTYPE = csvRecord.get(7);
 
 					String FINEAMT = csvRecord.get(8);
@@ -323,7 +334,7 @@ public class Controller {
 		// TODO R6
 		return null;
 	}
-	
+
 	/**
 	 * Parte C
 	 */
@@ -350,6 +361,7 @@ public class Controller {
 		// TODO R10
 		return 0;
 	}
+	
 
 
 	/*
