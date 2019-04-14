@@ -67,6 +67,11 @@ public class Controller {
 	}
 
 	public void run() {
+		
+		long startTime;
+		long endTime;
+		long duration;
+		
 		Scanner sc = new Scanner(System.in);
 		boolean fin=false;
 		Controller controller = new Controller();
@@ -257,7 +262,7 @@ public class Controller {
 					int j=0;
 					int k=0;
 					int l=0;*/
-					// TODO
+					
 					//Rectangulo Min y Max
 					if(x>Xmax){Xmax=x;/*if(i<20){System.out.println("xmax");i++;}*/}
 					if(y>Ymax){Ymax=y;/*if(j<20){System.out.println("ymax");j++;}*/}
