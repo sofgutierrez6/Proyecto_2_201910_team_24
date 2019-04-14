@@ -14,9 +14,11 @@ import org.apache.commons.csv.CSVRecord;
 
 import model.data_structures.ArregloDinamico;
 import model.data_structures.BST;
+import model.data_structures.ComparatorXViolationCode;
 import model.data_structures.IQueue;
 import model.data_structures.IStack;
 import model.data_structures.MaxColaPrioridad;
+import model.data_structures.RedBlackBST;
 import model.data_structures.TablaHash;
 import model.vo.LocationVO;
 import model.vo.VODaylyStatistic;
@@ -55,10 +57,17 @@ public class Controller {
 
 	public static Double Xmin, Ymin, Xmax, Ymax;
 
+	private ComparatorXViolationCode comparadorCodigo;
+
+	private RedBlackBST<Integer, VOMovingViolations> arbolBalanceado;
+	private ArregloDinamico<VOMovingViolations> arregloDinamico;
+	
 
 	public Controller() {
 		view = new MovingViolationsManagerView();
-
+		arbolBalanceado = new RedBlackBST<Integer, VOMovingViolations>();
+		arregloDinamico = new ArregloDinamico<VOMovingViolations>(50);
+		
 		Xmin=393185.8;
 		Ymin=138316.9;
 
@@ -284,6 +293,8 @@ public class Controller {
 					String VIOLATIONCODE = !otroAtributo ? csvRecord.get(14).toString() :  csvRecord.get(15);
 					//System.out.println(OBJECTID + "," + LOCATION +  "," + ADDRESS_ID + "," + STREETSEGID);
 					VOMovingViolations newMoving = new VOMovingViolations(pOBJECTID,LOCATION,pADDRESS_ID,pSTREETSEGID,pFINEAMT,pTOTALPAID,pACCIDENTINDICATOR,TICKETISSUEDATE,VIOLATIONCODE,VIOLATIONDESC, x, y);
+					arbolBalanceado.put(pOBJECTID, newMoving);
+					arregloDinamico.agregar(newMoving);
 					numCargados++;
 					//moving.add(listaa);
 				}
