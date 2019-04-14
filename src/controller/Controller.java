@@ -205,7 +205,7 @@ public class Controller {
 		int numCargados=0;
 		if(numeroSemestre==1)
 		{
-			numCargados+= loadMovingViolationsXMes(mesEnero, false);
+			//numCargados+= loadMovingViolationsXMes(mesEnero, false);
 			numCargados+= loadMovingViolationsXMes(mesFebrero, false);
 			numCargados+= loadMovingViolationsXMes(mesMarzo, false);
 			numCargados+= loadMovingViolationsXMes(mesAbril, false);
@@ -293,8 +293,8 @@ public class Controller {
 					String VIOLATIONCODE = !otroAtributo ? csvRecord.get(14).toString() :  csvRecord.get(15);
 					//System.out.println(OBJECTID + "," + LOCATION +  "," + ADDRESS_ID + "," + STREETSEGID);
 					VOMovingViolations newMoving = new VOMovingViolations(pOBJECTID,LOCATION,pADDRESS_ID,pSTREETSEGID,pFINEAMT,pTOTALPAID,pACCIDENTINDICATOR,TICKETISSUEDATE,VIOLATIONCODE,VIOLATIONDESC, x, y);
-					arbolBalanceado.put(pOBJECTID, newMoving);
-					arregloDinamico.agregar(newMoving);
+					//arbolBalanceado.put(pOBJECTID, newMoving);
+					//arregloDinamico.agregar(newMoving);
 					numCargados++;
 					//moving.add(listaa);
 				}
